@@ -51,7 +51,8 @@ const App = () => {
 
 	const [selected, setSelected] = useState(0);
 	const [allVotes, setAllVotes] = useState(Array(7).fill(0));
-	const incrementSelected = () => setSelected(selected + 1);
+	const incrementSelected = () => setSelected(Math.ceil(Math.random() * 6));
+	console.log(selected)
 	let mostVotes = 0;
 	for (let i = 0, j = 0; i < 6; i++) {
 		if (allVotes[i] > j) {
