@@ -19,7 +19,7 @@ const Header = ({header}) => {
 }
 
 const StatisticLine = ({fb}) => {
-	const iteratedObject = fb.grades.map(element => <tr key={element.id}><td>{element.name}</td> <td>{element.value}</td></tr>)
+	const iteratedObject = fb.grades.map(element => <tr key={element.id}><td>{element.name}</td><td>{element.value}</td></tr>)
 
 	return (
 		<>
