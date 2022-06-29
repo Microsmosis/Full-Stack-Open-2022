@@ -4,7 +4,15 @@ const Parts = ({ parts }) => {
 			{element.name} {element.exercises}
 		</p>
 	));
-	return <>{iteratedObject}</>;
+	const total = parts.reduce((a, b) => ({
+		exercises: a.exercises + b.exercises,
+	}));
+	return (
+		<>
+			{iteratedObject}
+			<b>total of exercises {total.exercises}</b>
+		</>
+	);
 };
 
 const Content = ({ content }) => {
@@ -19,7 +27,6 @@ const Header = ({ course }) => {
 	return (
 		<>
 			<h1>{course.name}</h1>
-			<Content content={course} />
 		</>
 	);
 };
@@ -28,6 +35,7 @@ const Course = ({ course }) => {
 	return (
 		<>
 			<Header course={course} />
+			<Content content={course} />
 		</>
 	);
 };
