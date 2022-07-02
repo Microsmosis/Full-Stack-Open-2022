@@ -1,23 +1,24 @@
 import React from 'react';
-import axios from 'axios';
 import Filter from './components/filter.js'
 import Form from './components/form.js'
 import Persons from './components/persons.js'
+import contactService from './services/contacts'
 import { useState, useEffect } from 'react'
 
 const App = () => {
+
 	const [persons, setPersons] = useState([]);
 	const [newName, setNewName] = useState('');
 	const [newNumber, setNewNumber] = useState('');
 	const [showPersons, setShowPersons] = useState('');
 
 	useEffect(() => {
-		axios
-		  .get('http://localhost:3001/persons')
-		  .then(response => {
-			setPersons(response.data)
-		  })
-	  }, [])
+		contactService
+		.getAll()
+		.then(initialContacts => {
+			setPersons(initialContacts)
+		})
+	}, [])
 
 	let searchValue = showPersons.toLowerCase(showPersons);
 
@@ -27,18 +28,41 @@ const App = () => {
 
 	const addPerson = (event) => {
 		event.preventDefault();
-		let nameList = persons.map((element) => {
-			return element.name;
-		});
-		if (nameList.includes(newName)) {
-			return alert(`${newName} is already added to phonebook`);
-		}
 		const personObject = {
 			name: newName,
 			number: newNumber,
 		};
-		setPersons(persons.concat(personObject));
-		setNewName('');
+		const check = persons.find(p => p.name === personObject.name)
+		if(check && check.name === personObject.name && window.confirm(check.name + ' is already addedd to the phonebook, replace the old with a new one?')) {
+			contactService
+				.update(check.id, personObject)
+				.then(updatedContact => {
+					
+				})
+			}
+			else {
+				contactService
+				.create(personObject)
+				.then(returnedContact => {
+				setPersons(persons.concat(returnedContact))
+			})
+		}
+		setNewName('')
+		setNewNumber('')
+	};
+
+	const deletePerson =  (contact) => {
+		if(window.confirm('Delete ' + contact.name + ' ?') === true) {
+			contactService
+				.del(contact.id)
+				.then(returnedContact => {
+					setPersons(
+						persons.filter((person) => {
+							return person.id !== contact.id;
+						})
+					 );
+			})
+		}
 	};
 
 	const handleNewPerson = (event) => {
@@ -58,14 +82,14 @@ const App = () => {
 	]
 
 	return (
-		<div>
+		<>
 			<h2>Phonebook</h2>
 			<Filter value={showPersons} fn={handleShowPerson} />
 			<h2>add a new</h2>
 			<Form fns={functions} valueName={newName} valueNumber={newNumber} />
 			<h2>Numbers</h2>
-			<Persons contacts={personsToShow} />
-		</div>
+			<Persons contacts={personsToShow} fn={deletePerson}/>
+		</>
 	);
 };
 
