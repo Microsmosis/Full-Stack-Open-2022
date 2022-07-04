@@ -1,6 +1,7 @@
 import React from 'react';
 
 const Form = ({ fns, valueName, valueNumber }) => {
+
 	return (
 		<form onSubmit={fns[0]}>
 			<div>

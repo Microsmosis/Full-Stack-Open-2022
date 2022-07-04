@@ -1,77 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-
-const Filter = ({ value, fn }) => {
-	return (
-		<>
-			find countries with <input value={value} onChange={fn} />
-		</>
-	);
-};
-
-const Languages = ({ langs }) => {
-	let arr = [];
-	let i = 0;
-	for (let property in langs[0].languages) {
-		arr[i++] = langs[0].languages[property];
-	}
-
-	const langArray = arr.map((lang) => <li key={lang}>{lang}</li>);
-
-	return (
-		<>
-			<ul>{langArray}</ul>
-		</>
-	);
-};
-
-const Weather = ({ weather }) => {
-	const iconSource =
-		'http://openweathermap.org/img/wn/' + weather.weather[0].icon + '@2x.png';
-	return (
-		<>
-			<h1>Weather in {weather.name}</h1>
-			<p>temperature {weather.main.temp} Celcius</p>
-			<img src={iconSource} alt="icon"></img>
-			<p>wind {weather.wind.speed} m/s</p>
-		</>
-	);
-};
-
-const Country = ({ fullData, weather }) => {
-	return (
-		<>
-			<h1>{fullData[0].name.common}</h1>
-			<p>capital {fullData[0].capital}</p>
-			<p>area {fullData[0].area}</p>
-			<h2>languages:</h2>
-			<Languages langs={fullData} />
-			<img alt={fullData[0].name.common} src={fullData[0].flags.png}></img>
-			<Weather weather={weather} />
-		</>
-	);
-};
-
-const Countries = ({ allCountriesData, test, weather }) => {
-	if (allCountriesData.length === 1) {
-		return (
-			<>
-				<Country fullData={allCountriesData} weather={weather} />
-			</>
-		);
-	}
-
-	return (
-		<>
-			{allCountriesData.length > 10 ? (
-				<p>Too many matches, specify another filter</p>
-			) : (
-				<>{test} </>
-			)}
-		</>
-	);
-};
+import Filter from './components/filter.js'
+import Countries from './components/countries.js'
 
 const App = () => {
 	const [countries, setCountries] = useState([]);
@@ -102,7 +33,8 @@ const App = () => {
 
 	let capitalCity = '';
 	if (switchW === 1) {
-		capitalCity = countriesToShow[0].capital;
+		if(countriesToShow.length > 0)
+			capitalCity = countriesToShow[0].capital;
 	}
 
 	useEffect(() => {
@@ -139,7 +71,7 @@ const App = () => {
 			<Filter value={showCountries} fn={handleShowCountry} />
 			<Countries
 				allCountriesData={countriesToShow}
-				test={iteratedObject}
+				jsxObject={iteratedObject}
 				weather={weather}
 			/>
 		</>

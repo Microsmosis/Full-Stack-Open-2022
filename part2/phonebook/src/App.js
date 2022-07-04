@@ -2,6 +2,7 @@ import React from 'react';
 import Filter from './components/filter.js'
 import Form from './components/form.js'
 import Persons from './components/persons.js'
+import Message from './components/message.js'
 import contactService from './services/contacts'
 import { useState, useEffect } from 'react'
 
@@ -11,6 +12,8 @@ const App = () => {
 	const [newName, setNewName] = useState('');
 	const [newNumber, setNewNumber] = useState('');
 	const [showPersons, setShowPersons] = useState('');
+	const [messageName, setMessageName] = useState('');
+	const [messageType, setMessageType] = useState('1');
 
 	useEffect(() => {
 		contactService
@@ -37,14 +40,21 @@ const App = () => {
 			contactService
 				.update(check.id, personObject)
 				.then(updatedContact => {
-					
+					setMessageName(personObject.name)
+					setMessageType(2);
+				})
+				.catch (error => {
+					setMessageName(personObject.name)
+					setMessageType(3);
 				})
 			}
 			else {
 				contactService
 				.create(personObject)
 				.then(returnedContact => {
-				setPersons(persons.concat(returnedContact))
+					setMessageName(personObject.name)
+					setMessageType(1);
+					setPersons(persons.concat(returnedContact))
 			})
 		}
 		setNewName('')
@@ -84,6 +94,7 @@ const App = () => {
 	return (
 		<>
 			<h2>Phonebook</h2>
+			<Message name={messageName} type={messageType}/>
 			<Filter value={showPersons} fn={handleShowPerson} />
 			<h2>add a new</h2>
 			<Form fns={functions} valueName={newName} valueNumber={newNumber} />
