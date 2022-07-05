@@ -15,7 +15,7 @@ const App = () => {
 			setCountries(response.data);
 			setSwitchW(1);
 		});
-	}, [showCountries]);
+	}, []);
 
 	let searchValue = showCountries.toLowerCase();
 
