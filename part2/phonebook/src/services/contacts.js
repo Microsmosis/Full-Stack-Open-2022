@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = 'http://localhost:3001/persons';
+const baseUrl = 'https://sleepy-beyond-07389.herokuapp.com/api/persons';
 
 const getAll = async () => {
 	const request = axios.get(baseUrl);
@@ -17,7 +17,7 @@ const update = async (id, newObject) => {
 	const request = axios.put(`${baseUrl}/${id}`, newObject);
 	const response = await request;
 	if(response.status === 404)
-		return 'error';
+		return 'error'
 	return response.data;
 };
 

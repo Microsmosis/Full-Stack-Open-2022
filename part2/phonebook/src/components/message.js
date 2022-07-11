@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Message = ({ name, type }) => {
+const Message = ({ name, type , messageUpdateError}) => {
 
 	if(name === '') {
 		return null;
@@ -33,10 +33,17 @@ const Message = ({ name, type }) => {
 		marginLeft: 10
 	}
 
+	const errorText = {
+		color: 'red',
+		fontSize: 20,
+		marginTop : 8,
+		marginLeft: 10
+	}
+
 	if(type === 3) {
 		return (
 			<div style={errorStyle}>
-				<p>Information of {name} has already been deleted from the server</p>
+				<p style={errorText}>{messageUpdateError}</p>
 			</div>
 		);
 	}

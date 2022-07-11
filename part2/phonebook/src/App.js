@@ -14,7 +14,7 @@ const App = () => {
 	const [showPersons, setShowPersons] = useState('');
 	const [messageName, setMessageName] = useState('');
 	const [messageType, setMessageType] = useState('1');
-
+	const [validErrorMsg, setValidErrorMsg] = useState('');
 	useEffect(() => {
 		contactService
 		.getAll()
@@ -31,11 +31,13 @@ const App = () => {
 
 	const addPerson = (event) => {
 		event.preventDefault();
+		
 		const personObject = {
 			name: newName,
 			number: newNumber,
 		};
 		const check = persons.find(p => p.name === personObject.name)
+
 		if(check && check.name === personObject.name && window.confirm(check.name + ' is already addedd to the phonebook, replace the old with a new one?')) {
 			contactService
 				.update(check.id, personObject)
@@ -44,18 +46,22 @@ const App = () => {
 					setMessageType(2);
 				})
 				.catch (error => {
-					setMessageName(personObject.name)
+					setValidErrorMsg(error.response.data.error)
 					setMessageType(3);
 				})
 			}
-			else {
+		else {
 				contactService
 				.create(personObject)
 				.then(returnedContact => {
 					setMessageName(personObject.name)
 					setMessageType(1);
 					setPersons(persons.concat(returnedContact))
-			})
+				})
+				.catch(error => {
+					setValidErrorMsg(error.response.data.error)
+					setMessageType(3);
+				})
 		}
 		setNewName('')
 		setNewNumber('')
@@ -94,7 +100,7 @@ const App = () => {
 	return (
 		<>
 			<h2>Phonebook</h2>
-			<Message name={messageName} type={messageType}/>
+			<Message name={messageName} type={messageType}  messageUpdateError={validErrorMsg}/>
 			<Filter value={showPersons} fn={handleShowPerson} />
 			<h2>add a new</h2>
 			<Form fns={functions} valueName={newName} valueNumber={newNumber} />
