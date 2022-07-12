@@ -5,8 +5,8 @@ POST http://localhost:3003/api/blogs/ HTTP/1.1
 content-type: application/json
 
 {
-  "title": "Big Bananas",
-  "author": "Donkey Kong",
-  "url": "test",
-  "likes": 420
+  "title": "Mushrooms Kingdom",
+  "author": "Princess Peach",
+  "url": "test.2",
+  "likes": 333
 }
