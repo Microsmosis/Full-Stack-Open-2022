@@ -1,7 +1,10 @@
+require('dotenv').config();
+
 const PORT = 3003;
-const MONGODB_URI = `mongodb+srv://llonnrot:fullstackopen@cluster0.eyuu3.mongodb.net/bloglistApp?retryWrites=true&w=majority`;
+
+const MONGODB_URI = process.env.MONGODB_URI;
 
 module.exports = {
 	MONGODB_URI,
-	PORT
-}
+	PORT,
+};

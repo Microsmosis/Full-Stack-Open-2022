@@ -5,8 +5,19 @@ POST http://localhost:3003/api/blogs/ HTTP/1.1
 content-type: application/json
 
 {
-  "title": "Mushrooms Kingdom",
+  "title": "Mushroom Kingdom",
   "author": "Princess Peach",
   "url": "test.2",
   "likes": 333
+}
+
+###
+DELETE http://localhost:3003/api/blogs/62cc114c404806061280aaac
+
+###
+PUT http://localhost:3003/api/blogs/62ceb20dcfaaeaef09412e14/ HTTP/1.1
+content-type: application/json
+
+{
+  "likes": 4444444
 }
